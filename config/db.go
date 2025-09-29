@@ -2,7 +2,6 @@ package config
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -13,14 +12,11 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	dbURL := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("PGHOST"),
-		os.Getenv("PGPORT"),
-		os.Getenv("PGUSER"),
-		os.Getenv("PGPASSWORD"),
-		os.Getenv("PGDATABASE"),
-	)
+	// Railway sudah kasih DATABASE_URL
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		log.Fatal("❌ DATABASE_URL is not set")
+	}
 
 	var err error
 	DB, err = sql.Open("postgres", dbURL)
@@ -34,13 +30,13 @@ func InitDB() {
 
 	log.Println("✅ Database connected successfully")
 
-	// Run migrations
+	// Jalankan migration
 	RunMigration()
 }
 
 func RunMigration() {
 	migrations := &migrate.FileMigrationSource{
-		Dir: "migrations",
+		Dir: "migrations", 
 	}
 
 	n, err := migrate.Exec(DB, "postgres", migrations, migrate.Up)
