@@ -1,10 +1,13 @@
 package models
 
+import "time"
+
 type Category struct {
-	ID         int    `json:"id"`
-	Name       string `json:"name"`
-	CreatedAt  string `json:"created_at"`
-	CreatedBy  string `json:"created_by"`
-	ModifiedAt string `json:"modified_at"`
-	ModifiedBy string `json:"modified_by"`
+	ID         int       `gorm:"primaryKey;autoIncrement"`
+	Name       string    `gorm:"size:255;not null"`
+	CreatedAt  time.Time
+	CreatedBy  string    `gorm:"size:255"`
+	ModifiedAt time.Time
+	ModifiedBy string    `gorm:"size:255"`
+	Books      []Book    `gorm:"foreignKey:CategoryID"`
 }

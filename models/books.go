@@ -1,13 +1,20 @@
 package models
 
+import "time"
+
 type Book struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	ImageURL    string `json:"image_url"`
-	ReleaseYear int    `json:"release_year"`
-	Price       int    `json:"price"`
-	TotalPage   int    `json:"total_page"`
-	Thickness   string `json:"thickness"`
-	CategoryID  int    `json:"category_id"`
+	ID          int       `gorm:"primaryKey;autoIncrement"`
+	Title       string    `gorm:"size:255;not null"`
+	Description string    `gorm:"type:text"`
+	ImageURL    string    `gorm:"size:255"`
+	ReleaseYear int
+	Price       int
+	TotalPage   int
+	Thickness   string    `gorm:"size:50"`
+	CategoryID  int
+	Category    Category  `gorm:"foreignKey:CategoryID"`
+	CreatedAt   time.Time
+	CreatedBy   string    `gorm:"size:255"`
+	ModifiedAt  time.Time
+	ModifiedBy  string    `gorm:"size:255"`
 }
